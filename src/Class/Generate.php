@@ -2,8 +2,10 @@
 
 namespace App\Class;
 
-use App\Exceptions\BadModeSudokuException;
+use App\Exceptions\LimitSudokuException;
+use App\Exceptions\ModeSudokuException;
 use App\Interface\GenerateInterface;
+use Exception;
 
 Class Generate implements GenerateInterface
 {
@@ -13,36 +15,53 @@ Class Generate implements GenerateInterface
         'HARD' => 63
     ];
 
+    CONST LIMIT = 10;
+
     /**
-     * Génère une grille de sudoku
+     * Génère jusqu'à  grilles de sudoku
      */
-    public function generate(string $mode): array
+    public function generate(string $mode, int $many): array
     {
         if (isset(SELF::MODE[$mode])) {
             $sudoku = [];
-            $line = $this->generateFirstLine();
-            $index = 0;
-
-            for ($x=0; $x<7; $x+=3) {
-                for ($a=0; $a<3; $a++) {
-                    for ($b=0; $b<3; $b++) {
-                        for ($c=0; $c<3; $c++) {
-                            $sudoku[$b+$x][] = $line[$index];
-                            $index++;
-                        }
-                    }
-
-                    ($a != 2)? $line = $this->moveLine($line, 3) : "";
-                    $index = 0;
+            if ($many <= 10 && $many > 0) {
+                for ($n=0; $n < $many; $n++) {
+                    $lines = $this->constructLines($this->generateFirstLine());
+                    $withMode = $this->createMode($mode, $lines);
+                    $sudoku [$n] = $this->createGrids($this->shuffleLines($withMode));
                 }
-                $line = $this->moveLine($line, 1);
+                return $sudoku;
+            } else {
+                throw new LimitSudokuException();
             }
-            $sudoku = $this->shuffleLines($this->generateMode($mode, $sudoku));
-            return $this->generateFinalGrid($sudoku);
-
         } else {
-            throw new BadModeSudokuException();
+            throw new ModeSudokuException();
         }
+    }
+    
+    /**
+     * Créer les lignes à partir de la première
+     */
+    private function constructLines(array $line): array
+    {
+        $sudoku = [];
+        $index = 0;
+
+        for ($x=0; $x<7; $x+=3) {
+            for ($a=0; $a<3; $a++) {
+                for ($b=0; $b<3; $b++) {
+                    for ($c=0; $c<3; $c++) {
+                        $sudoku[$b+$x][] = $line[$index];
+                        $index++;
+                    }
+                }
+                ($a != 2)? $line = $this->moveLine($line, 3) : "";
+                $index = 0;
+            }
+            $line = $this->moveLine($line, 1);
+        }
+
+        return $sudoku;
     }
     
     /**
@@ -84,7 +103,7 @@ Class Generate implements GenerateInterface
     /**
      * Création des trous dans la grille selon le mode
      */
-    private function generateMode(string $mode, array $sudoku): array
+    private function createMode(string $mode, array $sudoku): array
     {
         $index = [];
 
@@ -118,7 +137,7 @@ Class Generate implements GenerateInterface
     /**
      * Création des grilles à partir des lignes générées
      */
-    private function generateFinalGrid(array $sudoku): array
+    private function createGrids(array $sudoku): array
     {
         $sudokuF = [];
         $index = 0;

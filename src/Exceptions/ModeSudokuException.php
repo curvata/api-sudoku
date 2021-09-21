@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class BadModeSudokuException extends Exception
+class ModeSudokuException extends Exception
 {
     public function __construct()
     {

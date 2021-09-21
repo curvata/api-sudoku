@@ -3,33 +3,79 @@
 namespace App\Tests;
 
 use App\Class\Generate;
-use App\Exceptions\BadModeSudokuException;
+use App\Exceptions\LimitSudokuException;
+use App\Exceptions\ModeSudokuException;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GenerateTest extends KernelTestCase
 {
-    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    public function invokeMethod($methodName, array $parameters = array())
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $generate = new Generate();
+        $reflection = new ReflectionClass(get_class($generate));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
-        return $method->invokeArgs($object, $parameters);
+        return $method->invokeArgs($generate, $parameters);
+    }
+
+    public function testGenerate()
+    {
+        $generate = new Generate();
+        $sudoku = $generate->generate("HARD", 1);
+
+        foreach ($sudoku[0] as $k => $v) {
+            $sudoku[0] = array_merge($sudoku[0], $sudoku[0][$k]);
+        }
+
+        $this->assertCount(90, $sudoku[0]);
+
+        $count = 0;
+
+        foreach ($sudoku[0] as $k => $v) {
+            ("*" === $v)? $count++ : "";
+        }
+
+        $this->assertEquals(63, $count);
+    }
+
+    public function testManyGenerate()
+    {
+        $generate = new Generate();
+        $sudoku = $generate->generate("HARD", 10);
+
+        $this->assertCount(10, $sudoku);
+        $this->assertCount(9, $sudoku[0]);
+    }
+
+    public function testConstructLines()
+    {
+        $array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $lines = $this->invokeMethod("constructLines", [$array]);
+        $this->assertCount(9, $lines);
+        $this->assertEquals(456789123, implode("", $lines[1]));
+        $this->assertEquals(891234567, implode("", $lines[3]));
     }
 
     public function testModeNotValid(): void
     {
-        $this->expectException(BadModeSudokuException::class);
+        $this->expectException(ModeSudokuException::class);
         $sudoku = new Generate();
-        $array = $sudoku->generate("VETERAN");
+        $sudoku->generate("VETERAN", 1);
+    }
+
+    public function testManyNotValid(): void
+    {
+        $this->expectException(LimitSudokuException::class);
+        $sudoku = new Generate();
+        $sudoku->generate("HARD", 11);
     }
 
     public function testGenerateFirstLine()
     {
         $array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        $generate = new Generate();
-        $line = $this->invokeMethod($generate, "generateFirstLine", []);
+        $line = $this->invokeMethod("generateFirstLine", []);
         $this->assertCount(9, $line);
         $this->assertEmpty(array_diff($array, $line));
     }
@@ -48,8 +94,7 @@ class GenerateTest extends KernelTestCase
             8 => 18,
         ];
 
-        $generate = new Generate();
-        $shuffles = $this->invokeMethod($generate, "shuffleLines", [$sudoku]);
+        $shuffles = $this->invokeMethod("shuffleLines", [$sudoku]);
         $ok = false;
 
         foreach ($shuffles as $k => $v) {
@@ -63,24 +108,21 @@ class GenerateTest extends KernelTestCase
     public function testMoveLine()
     {
         $sudoku = [1, 4, 5, 9, 8, 7, 6, 3, 2];
-        $generate = new Generate();
 
         // Move 3
-        $move = $this->invokeMethod($generate, "moveLine", [$sudoku, 3]); 
+        $move = $this->invokeMethod("moveLine", [$sudoku, 3]); 
         $this->assertTrue(([9, 8, 7, 6, 3, 2, 1, 4, 5] === $move));
 
         // Move 1
-        $move = $this->invokeMethod($generate, "moveLine", [$sudoku, 1]); 
+        $move = $this->invokeMethod("moveLine", [$sudoku, 1]); 
         $this->assertTrue(([4, 5, 9, 8, 7, 6, 3, 2, 1] === $move));
     }
 
     public function testGenerateMode()
     {
-
         $sudoku = [];
-        $generate = new Generate();
 
-        $mode = $this->invokeMethod($generate, "generateMode", ['MEDIUM', $sudoku]);
+        $mode = $this->invokeMethod("createMode", ['MEDIUM', $sudoku]);
 
         foreach ($mode as $k => $v) {
             $sudoku = array_merge($sudoku, $mode[$k]);
@@ -103,9 +145,7 @@ class GenerateTest extends KernelTestCase
             [3, 2, 5, 4, 6, 7, 9, 8, 4]
         ];
 
-        $generate = new Generate();
-
-        $grid = $this->invokeMethod($generate, "generateFinalGrid", [$sudoku]);  
+        $grid = $this->invokeMethod("createGrids", [$sudoku]);  
 
         $this->assertEquals(8, $grid[7][1]);
         $this->assertEquals(24, ($grid[5][3] + $grid[5][4] + $grid[5][5]));
