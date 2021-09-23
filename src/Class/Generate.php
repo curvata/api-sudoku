@@ -5,7 +5,6 @@ namespace App\Class;
 use App\Exceptions\LimitSudokuException;
 use App\Exceptions\ModeSudokuException;
 use App\Interface\GenerateInterface;
-use Exception;
 
 Class Generate implements GenerateInterface
 {
@@ -26,75 +25,75 @@ Class Generate implements GenerateInterface
             $sudoku = [];
             if ($many <= 10 && $many > 0) {
                 for ($n=0; $n < $many; $n++) {
-                    $lines = $this->constructLines($this->generateFirstLine());
-                    $withMode = $this->createMode($mode, $lines);
-                    $sudoku [$n] = $this->createGrids($this->shuffleLines($withMode));
+                    $rows = $this->constructRows($this->generateFirstRow());
+                    $withMode = $this->createMode($mode, $rows);
+                    $sudoku [$n] = $this->createGrids($this->shuffleRows($withMode));
                 }
                 return $sudoku;
             } else {
-                throw new LimitSudokuException();
+                throw new LimitSudokuException(self::LIMIT);
             }
         } else {
             throw new ModeSudokuException();
         }
     }
+
+    /**
+     * Génère la première ligne
+     */
+    private function generateFirstRow(): array
+    { 
+        $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $row = [];
+
+        for ($n=0; $n<9; $n++) {
+            $a = random_int(0, count($numbers)-1); 
+            $row[$n] = $numbers[$a];
+            array_splice($numbers, $a, 1);
+        }
+
+        return $row;
+    }
     
     /**
      * Créer les lignes à partir de la première
      */
-    private function constructLines(array $line): array
+    private function constructRows(array $row): array
     {
         $sudoku = [];
-        $index = 0;
 
         for ($x=0; $x<7; $x+=3) {
             for ($a=0; $a<3; $a++) {
+                $index = 0;
                 for ($b=0; $b<3; $b++) {
                     for ($c=0; $c<3; $c++) {
-                        $sudoku[$b+$x][] = $line[$index];
+                        $sudoku[$b+$x][] = $row[$index];
                         $index++;
                     }
                 }
-                ($a != 2)? $line = $this->moveLine($line, 3) : "";
+                ($a != 2)? $row = $this->moveRow($row, 3) : "";
                 $index = 0;
             }
-            $line = $this->moveLine($line, 1);
+            $row = $this->moveRow($row, 1);
         }
 
         return $sudoku;
     }
-    
-    /**
-     * Génère la première ligne
-     */
-    private function generateFirstLine(): array
-    { 
-        $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        $line = [];
 
-        for ($n=0; $n<9; $n++) {
-            $a = random_int(0, count($numbers)-1); 
-            $line[$n] = $numbers[$a];
-            array_splice($numbers, $a, 1);
-        }
-
-        return $line;
-    }
-    
     /**
      * Déplace les éléments du tableau de x index
      */
-    private function moveLine(array $line, int $move)
+    private function moveRow(array $row, int $move)
     {
         $array = [];
 
         for ($n=0; $n<9; $n++) {
             if ($n > 5 && $move === 3) {
-                $array[$n] = $line[($n-6)];
+                $array[$n] = $row[($n-6)];
             } else if ($n === 8 && $move === 1) {
-                $array[$n] = $line[0];
+                $array[$n] = $row[0];
             } else {
-                $array[$n] = $line[($n+$move)];
+                $array[$n] = $row[($n+$move)];
             }
         }
         return $array;    
@@ -133,6 +132,20 @@ Class Generate implements GenerateInterface
 
         return $sudoku;
     }
+
+    /**
+     * Mélanger les lignes
+     */
+    private function shuffleRows(array $sudoku): array
+    {
+        $array = array_chunk($sudoku, 3);
+
+        foreach ($array as $k => $v) {
+            shuffle($array[$k]);
+        }
+
+        return array_merge($array[0], $array[1], $array[2]);
+    }
     
     /**
      * Création des grilles à partir des lignes générées
@@ -155,19 +168,5 @@ Class Generate implements GenerateInterface
         }
 
         return $sudokuF;
-    }
-    
-    /**
-     * Mélanger les lignes
-     */
-    private function shuffleLines(array $sudoku): array
-    {
-        $array = array_chunk($sudoku, 3);
-
-        foreach ($array as $k => $v) {
-            shuffle($array[$k]);
-        }
-
-        return array_merge($array[0], $array[1], $array[2]);
     }
 }
