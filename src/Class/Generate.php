@@ -9,15 +9,15 @@ use App\Interface\GenerateInterface;
 Class Generate implements GenerateInterface
 {
     CONST MODE = [
-        'EASY' => 27,
-        'MEDIUM' => 45,
-        'HARD' => 63
+        'easy' => 27,
+        'medium' => 45,
+        'hard' => 63
     ];
 
     CONST LIMIT = 10;
 
     /**
-     * Génère jusqu'à  grilles de sudoku
+     * Génère jusqu'à LIMIT grilles de sudoku
      */
     public function generate(string $mode, int $many): array
     {

@@ -38,7 +38,6 @@ Class Validate implements ValidateInterface
     private function transformInRows(array $sudoku): array
     {
         $rows = [];
-
         $key = 0;
 
         for ($a=0; $a<7; $a+=3) {

@@ -14,7 +14,7 @@ class GenerateTest extends KernelTestCase
     public function testGenerate()
     {
         $generate = new Generate();
-        $sudoku = $generate->generate("HARD", 1);
+        $sudoku = $generate->generate("hard", 1);
 
         foreach ($sudoku[0] as $k => $v) {
             $sudoku[0] = array_merge($sudoku[0], $sudoku[0][$k]);
@@ -34,7 +34,7 @@ class GenerateTest extends KernelTestCase
     public function testManyGenerate()
     {
         $generate = new Generate();
-        $sudoku = $generate->generate("HARD", 10);
+        $sudoku = $generate->generate("hard", 10);
 
         $this->assertCount(10, $sudoku);
         $this->assertCount(9, $sudoku[0]);
@@ -56,7 +56,7 @@ class GenerateTest extends KernelTestCase
         $this->expectException(ModeSudokuException::class);
 
         $sudoku = new Generate();
-        $sudoku->generate("VETERAN", 1);
+        $sudoku->generate("veteran", 1);
     }
 
     public function testManyNotValid(): void
@@ -64,7 +64,7 @@ class GenerateTest extends KernelTestCase
         $this->expectException(LimitSudokuException::class);
 
         $sudoku = new Generate();
-        $sudoku->generate("HARD", 11);
+        $sudoku->generate("hard", 11);
     }
 
     public function testGenerateFirstLine()
@@ -122,7 +122,7 @@ class GenerateTest extends KernelTestCase
         $sudoku = [];
 
         $generate = new Generate();
-        $mode = $this->invokeMethod($generate, "createMode", ['MEDIUM', $sudoku]);
+        $mode = $this->invokeMethod($generate, "createMode", ['medium', $sudoku]);
 
         foreach ($mode as $k => $v) {
             $sudoku = array_merge($sudoku, $mode[$k]);

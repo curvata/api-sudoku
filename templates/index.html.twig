@@ -1,0 +1,216 @@
+{% extends "base.html.twig" %}
+{% block body %}
+ <div id="modal" class="modal">
+    <div class="modal_content">
+      <span class="close">X</span>
+      <p class="mdp_content"></p>
+    </div>
+</div>
+<div class="container">
+    <div class="content">
+        <header>
+            <div class="side_logo">
+                <div class="one"></div>
+                <div class="two"></div>
+            </div>
+            <div class="logo">
+                <img src="{{ asset('images/sudoku.jpg') }}">
+            </div>
+            <div class="side_logo">
+                <div class="one"></div>
+                <div class="two"></div>
+            </div>
+        </header>
+        <main>
+            <section class="sudoku">
+                <div class="grid">
+                    <div class="title">
+                        <h2>SUDOKU</h2>
+                        <p>Générer et valider un sudoku</p>
+                    </div>
+                    <table class="sudo">
+                        <tbody>
+                            <tr>
+                                <td id="A1"><input id="AI1"></input></td>
+                                <td id="A2"><input id="AI2"></input></td>
+                                <td id="A3" class="br"><input id="AI3"></input></td>
+                                <td id="B1"><input id="BI1"></input></td>
+                                <td id="B2"><input id="BI2"></input></td>
+                                <td id="B3"class="br"><input id="BI3"></input></td>
+                                <td id="C1"><input id="CI1"></input></td>
+                                <td id="C2"><input id="CI2"></input></td>
+                                <td id="C3"><input id="CI3"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="A4"><input id="AI4"></input></td>
+                                <td id="A5"><input id="AI5"></input></td>
+                                <td id="A6" class="br"><input id="AI6"></input></td>
+                                <td id="B4"><input id="BI4"></input></td>
+                                <td id="B5"><input id="BI5"></input></td>
+                                <td id="B6" class="br"><input id="BI6"></input></td>
+                                <td id="C4"><input id="CI4"></input></td>
+                                <td id="C5"><input id="CI5"></input></td>
+                                <td id="C6"><input id="CI6"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="A7"><input id="AI7"></input></td>
+                                <td id="A8"><input id="AI8"></input></td>
+                                <td id="A9" class="br"><input id="AI9"></input></td>
+                                <td id="B7"><input id="BI7"></input></td>
+                                <td id="B8"><input id="BI8"></input></td>
+                                <td id="B9" class="br"><input id="BI9"></input></td>
+                                <td id="C7"><input id="CI7"></input></td>
+                                <td id="C8"><input id="CI8"></input></td>
+                                <td id="C9"><input id="CI9"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="D1" class="bt"><input id="DI1"></input></td>
+                                <td id="D2" class="bt"><input id="DI2"></input></td>
+                                <td id="D3" class="br bt"><input id="DI3"></input></td>
+                                <td id="E1" class="bt"><input id="EI1"></input></td>
+                                <td id="E2" class="bt"><input id="EI2"></input></td>
+                                <td id="E3" class="br bt"><input id="EI3"></input></td>
+                                <td id="F1" class="bt"><input id="CI1"></input></td>
+                                <td id="F2" class="bt"><input id="CI2"></input></td>
+                                <td id="F3" class="bt"><input id="CI3"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="D4"><input id="DI4"></input></td>
+                                <td id="D5"><input id="DI5"></input></td>
+                                <td id="D6" class="br"><input id="DI6"></input></td>
+                                <td id="E4"><input id="EI4"></input></td>
+                                <td id="E5"><input id="EI5"></input></td>
+                                <td id="E6" class="br"><input id="EI6"></input></td>
+                                <td id="F4"><input id="FI4"></input></td>
+                                <td id="F5"><input id="FI5"></input></td>
+                                <td id="F6"><input id="FI6"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="D7"><input id="DI7"></input></td>
+                                <td id="D8"><input id="DI8"></input></td>
+                                <td id="D9" class="br"><input id="DI9"></input></td>
+                                <td id="E7"><input id="EI7"></input></td>
+                                <td id="E8"><input id="EI8"></input></td>
+                                <td id="E9" class="br"><input id="EI9"></input></td>
+                                <td id="F7"><input id="FI7"></input></td>
+                                <td id="F8"><input id="FI8"></input></td>
+                                <td id="F9"><input id="FI9"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="G1" class="bt"><input id="GI1"></input></td>
+                                <td id="G2" class="bt"><input id="GI2"></input></td>
+                                <td id="G3" class="br bt"><input id="GI3"></input></td>
+                                <td id="H1" class="bt"><input id="HI1"></input></td>
+                                <td id="H2" class="bt"><input id="HI2"></input></td>
+                                <td id="H3" class="br bt"><input id="HI3"></input></td>
+                                <td id="I1" class="bt"><input id="II1"></input></td>
+                                <td id="I2" class="bt"><input id="II2"></input></td>
+                                <td id="I3" class="bt"><input id="II3"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="G4"><input id="GI4"></input></td>
+                                <td id="G5"><input id="GI5"></input></td>
+                                <td id="G6" class="br"><input id="GI6"></input></td>
+                                <td id="H4"><input id="HI4"></input></td>
+                                <td id="H5"><input id="HI5"></input></td>
+                                <td id="H6" class="br"><input id="HI6"></input></td>
+                                <td id="I4"><input id="II4"></input></td>
+                                <td id="I5"><input id="II5"></input></td>
+                                <td id="I6"><input id="II6"></input></td>
+                            </tr>
+                            <tr>
+                                <td id="G7"><input id="GI7"></input></td>
+                                <td id="G8"><input id="GI8"></input></td>
+                                <td id="G9" class="br"><input id="GI9"></input></td>
+                                <td id="H7"><input id="HI7"></input></td>
+                                <td id="H8"><input id="HI8"></input></td>
+                                <td id="H9" class="br"><input id="HI9"></input></td>
+                                <td id="I7"><input id="II7"></input></td>
+                                <td id="I8"><input id="II8"></input></td>
+                                <td id="I9"><input id="II9"></input></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="btns">
+                        <select name="mode" id="mode">
+                            <option value="easy">Facile</option>
+                            <option value="medium">Moyen</option>
+                            <option value="hard">Difficile</option>
+                        </select>
+                        <button class="btn" id="generate">Générer une grille</button>
+                        <button class="btn" id="validate">Vérifier ma grille</button>
+                    </div>
+                </div>
+                <div class="illu">                    
+                    <img src="{{ asset('./images/img01.png') }}">
+                </div>
+            </section>
+            <section class="doc">
+                <div class="grid">
+                    <div class="title">
+                        <h2>CONFIGURATION GENERATE</h2>
+                        <p>Générer jusqu'à 10 grilles de Sudoku</p>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>GET</th>
+                                <td colspan="3">https://sudoku.menezes.be/api/v1/generate</td>
+                            </tr>
+                            <tr>
+                                <th>many</th>
+                                <td>Nombre de grilles</td>
+                                <td>min=1, max=10</td>
+                            </tr>
+                            <tr>
+                                <th>mode</th>
+                                <td>Niveaux de difficultés</td>
+                                <td>
+                                    easy(27), medium(45), hard(63) (cases vides)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Response</th>
+                                <td colspan="3">{"success": , "data": [], "created_at": }</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid">
+                    <div class="title">
+                        <h2>CONFIGURATION VALIDATE</h2>
+                        <p>Valider jusqu'à 10 grilles de Sudoku</p>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>POST</th>
+                                <td colspan="3">https://sudoku.menezes.be/api/v1/validate</td>
+                            </tr>
+                            <tr>
+                                <th>Request</th>
+                                <td>Format</td>
+                                <td>
+                                    [0: [0:[REGION], 1:[REGION], 2:[REGION],...]]
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Response</th>
+                                <td colspan="3">{"success": , "data": [], "created_at": }</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="container">
+                <div class="footer_content">
+                    <p>Développé par <a href="https://menezes.be">Menezes</a></p>
+                    <a class="social" href="https://github.com/curvata/api-sudoku"><img src="{{ asset('images/github.png') }}"></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+{% endblock %}
