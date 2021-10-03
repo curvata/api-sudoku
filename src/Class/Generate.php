@@ -27,7 +27,8 @@ Class Generate implements GenerateInterface
                 for ($n=0; $n < $many; $n++) {
                     $rows = $this->constructRows($this->generateFirstRow());
                     $withMode = $this->createMode($mode, $rows);
-                    $sudoku [$n] = $this->createGrids($this->shuffleRows($withMode));
+                    $shuffles = $this->shuffleColumns($this->shuffleRows($withMode));
+                    $sudoku [$n] = $this->createGrids($shuffles);
                 }
                 return $sudoku;
             } else {
@@ -68,6 +69,7 @@ Class Generate implements GenerateInterface
                 for ($b=0; $b<3; $b++) {
                     for ($c=0; $c<3; $c++) {
                         $sudoku[$b+$x][] = $row[$index];
+
                         $index++;
                     }
                 }
@@ -145,6 +147,32 @@ Class Generate implements GenerateInterface
         }
 
         return array_merge($array[0], $array[1], $array[2]);
+    }
+
+    /**
+     * Mélanger les colonnes
+     */
+    private function shuffleColumns(array $sudoku): array
+    {
+        $array = [];
+
+        for ($a=0; $a<9; $a++) {
+            $array[] = array_column($sudoku, $a);
+        }
+
+        $columns = array_chunk($array, 3);
+
+        foreach ($columns as $k => $v) {
+            shuffle($columns[$k]);
+        }
+
+        $columns = array_merge($columns[0], $columns[1], $columns[2]);
+
+        for ($a=0; $a<9; $a++) {
+            $sudokuF[] = array_column($columns, $a);
+        }
+
+        return $sudokuF;
     }
     
     /**

@@ -103,6 +103,35 @@ class GenerateTest extends KernelTestCase
         $this->assertEquals(20, $sudoku[3]+$sudoku[4]+$sudoku[5]);
     }
 
+    public function testShuffleColumns()
+    {
+        $sudoku = [
+            [8, 4, 3, 2, 5, 1, 6, 7, 9], 
+            [2, 5, 1, 6, 7, 9, 8, 4, 3], 
+            [6, 7, 9, 8, 4, 3, 2, 5, 1], 
+            [7, 9, 8, 4, 3, 2, 5, 1, 6], 
+            [4, 3, 2, 5, 1, 6, 7, 9, 8], 
+            [5, 1, 6, 7, 9, 8, 4, 3, 2], 
+            [1, 6, 7, 9, 8, 4, 3, 2, 5], 
+            [9, 8, 4, 3, 2, 5, 1, 6, 7], 
+            [3, 2, 5, 1, 6, 7, 9, 8, 4]
+        ];
+
+        $generate = new Generate();
+        $shuffles = $this->invokeMethod($generate, "shuffleColumns", [$sudoku]);
+        $ok = false;
+
+        foreach ($shuffles as $k => $v) {
+            foreach ($v as $key => $value) {
+                ($shuffles[$k] != $sudoku[$k][$key])? $ok = true : "";
+            }
+        }
+
+        $this->assertGreaterThanOrEqual(1, $ok);
+        $this->assertEquals(14, $sudoku[8][3]+$sudoku[8][4]+$sudoku[8][5]);
+
+    }
+
     public function testMoveLine()
     {
         $sudoku = [1, 4, 5, 9, 8, 7, 6, 3, 2];
