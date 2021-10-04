@@ -17,7 +17,7 @@ Class Validate implements ValidateInterface
         $many = count($sudoku);
         $validate = [];
 
-        if ($many <= 10 && $many > 0) {
+        if ($many <= self::LIMIT && $many > 0) {
             foreach ($sudoku as $k => $v) {
                 if (!$this->isSudoku($v)) {
                     $validate[$k] = "Votre grille n°". $k+1 ." n'est pas conforme !";
@@ -91,7 +91,7 @@ Class Validate implements ValidateInterface
             }
 
             foreach ($sudoku[$a] as $v) {
-                if (!is_int($v) || $v <= 0 || $v > 9) {
+                if ((int)$v <= 0 || (int)$v > 9) {
                     return false;
                 }
             }

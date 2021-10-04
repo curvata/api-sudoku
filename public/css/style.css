@@ -107,7 +107,7 @@ header .side_logo .two {
 	border: 10px solid rgba(255, 0, 0, 0.7);
 }
 
-.mdp_content {
+.sudo_content {
 	text-align: center;
 }
   
@@ -312,7 +312,7 @@ footer {
 
 /** MOBILE **/
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
 
 	.container {
 		max-width: 100%;
@@ -351,6 +351,10 @@ footer {
 
 	.btn {
 		margin-top: 1rem;
+	}
+
+	input {
+		font-size: 1.2rem;
 	}
   
 }

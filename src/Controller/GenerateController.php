@@ -30,7 +30,7 @@ Class GenerateController extends AbstractController
 
         if (!array_key_exists("many", $content) || !array_key_exists("mode", $content)) {
             return new JsonResponse(
-                ["success" => false, "created_at" => $time, "Message" => "Merci d'utiliser des paramètres de configuration valide !"], 
+                ["success" => false, "created_at" => $time, "message" => "Merci d'utiliser des paramètres de configuration valide !"], 
                 400, 
                 $config);
         }
@@ -39,11 +39,13 @@ Class GenerateController extends AbstractController
             $sudoku["success"] = true;
             $sudoku["created_at"] = $time;
             $sudoku["data"] = $generate->generate((string)$content["mode"], (int)$content["many"]);
+            $status = 200;
         } catch (Exception $e) {
             $sudoku["success"] = false;
             $sudoku["message"] = $e->getMessage();
+            $status = 400;
         }
         
-        return new JsonResponse($sudoku, 200, $config);
+        return new JsonResponse($sudoku, $status, $config);
     }
 }
