@@ -20,6 +20,7 @@ generate.addEventListener('click', (e) => {
             for (b=1; b<=9; b++) {
                 let input = document.querySelector('#'+region+'I'+b);
                 input.value = "";
+                input.removeAttribute("readonly");
                 regions.push(document.querySelector('#'+region+'I'+b));
             } 
             switch (a) {
