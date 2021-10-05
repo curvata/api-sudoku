@@ -10,4 +10,4 @@ Procédure d'installation du projet:
 Procédure pour lancer les tests
 
 1. Lancer les tests ```php bin/phpunit```
-2. Lancer le code coverage ```XDEBUG_MODE=coverage bin/phpunit --coverage-html coverage``
+2. Lancer le code coverage ```XDEBUG_MODE=coverage bin/phpunit --coverage-html coverage```
