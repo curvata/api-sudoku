@@ -9,6 +9,5 @@ Procédure d'installation du projet:
 
 Procédure pour lancer les tests
 
-1. Renseigner le DATABASE_URL dans le fichier .env.test
-2. Lancer les tests ```php bin/phpunit```
-3. Lancer le code coverage ```XDEBUG_MODE=coverage bin/phpunit --coverage-html coverage``
+1. Lancer les tests ```php bin/phpunit```
+2. Lancer le code coverage ```XDEBUG_MODE=coverage bin/phpunit --coverage-html coverage``
